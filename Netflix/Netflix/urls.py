@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from streaming import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('streaming.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 ]
