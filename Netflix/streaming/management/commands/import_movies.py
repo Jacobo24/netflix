@@ -6,18 +6,19 @@ class Command(BaseCommand):
     help = 'Import movies from The Movie Database'
 
     def handle(self, *args, **options):
-        movies = fetch_movies()
-        for movie in movies:
-            Movie.objects.update_or_create(
-                tmdb_id=movie['id'],
-                defaults={
-                    'title': movie['title'],
-                    'description': movie['overview'],
-                    'release_date': movie['release_date'],
-                    'genre': ', '.join([genre['name'] for genre in movie['genres']]),
-                    'vote_average': movie['vote_average'],
-                    'poster_path': f'https://image.tmdb.org/t/p/w500{movie["poster_path"]}',
-                    'backdrop_path': f'https://image.tmdb.org/t/p/w1280{movie["backdrop_path"]}',
-                }
-            )
-        self.stdout.write(self.style.SUCCESS('Movies imported successfully!'))
+        try:
+            movies = fetch_movies()
+            for movie in movies:
+                Movie.objects.create(
+                    title=movie.get('title'),
+                    description=movie.get('overview'),
+                    release_date=movie.get('release_date'),
+                    genre=','.join([genre.get('name') for genre in movie.get('genres', [])]),
+                    vote_average=movie.get('vote_average'),
+                    poster_path=movie.get('poster_path'),
+                    backdrop_path=movie.get('backdrop_path'),
+                    tmdb_id=movie.get('id')
+                )
+            self.stdout.write(self.style.SUCCESS('Successfully imported movies'))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f'Failed to import movies: {e}'))
