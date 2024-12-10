@@ -1,7 +1,7 @@
 import requests
 
 API_KEY = '9980df73b55139ebcf9a053dbdaf4031'
-BASE_URL = 'https://api.themoviedb.org/3/'
+BASE_URL = 'https://api.themoviedb.org/3'
 
 def fetch_data_from_api(endpoint, params=None, langauge='es-ES'):
     if params is None:
