@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Categorías{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Explora por Categorías</h1>
+<div class="category-grid">
+    {% for category in categories %}
+        <div class="category-card">
+            <a href="{% url 'category_detail' category.type category.id %}?name={{ category.name }}">
+                <div class="category-card-content">
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.type|title }}</p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

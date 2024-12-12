@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ category_name }}</h1>
+<div class="grid-container">
+    {% for item in content %}
+        <div class="card">
+            {% if item.poster %}
+                <img src="{{ item.poster }}" alt="{{ item.title }}">
+            {% endif %}
+            <div class="card-content">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.type|title }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No hay contenido en esta categoría.</p>
+    {% endfor %}
+</div>
+{% endblock %}
