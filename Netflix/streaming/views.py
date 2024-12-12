@@ -42,3 +42,18 @@ def tv_show_list_json(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
+def movie_list(request):
+    movies = fetch_movies()  # Usar los datos procesados desde utils.py
+    return render(request, 'streaming/movie_list.html', {'movies': movies})
+
+def tvshow_list(request):
+    tv_shows = fetch_tv_shows()  # Obtener datos de series
+    return render(request, 'streaming/tvshow_list.html', {'tv_shows': tv_shows})
+
+
+def home(request):
+    movies = fetch_movies()
+    tv_shows = fetch_tv_shows()
+    return render(request, 'streaming/home.html', {'movies': movies, 'tv_shows': tv_shows})
+

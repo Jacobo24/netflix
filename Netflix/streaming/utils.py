@@ -2,6 +2,8 @@ import requests
 
 API_KEY = '9980df73b55139ebcf9a053dbdaf4031'
 BASE_URL = 'https://api.themoviedb.org/3'
+IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
+
 
 def fetch_data_from_api(endpoint, params=None, langauge='es-ES'):
     if params is None:
@@ -18,12 +20,22 @@ def fetch_data_from_api(endpoint, params=None, langauge='es-ES'):
     else:
         raise Exception(f'Failed to fetch data from {url}: {response.text}')
 
+IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
+
 def fetch_movies():
     endpoint = 'movie/popular'
     response = fetch_data_from_api(endpoint)
-    return response.get('results', [])
+    results = response.get('results', [])
+    for movie in results:
+        if movie.get('poster_path'):
+            movie['poster_path'] = f"{IMAGE_BASE_URL}{movie['poster_path']}"
+    return results
 
 def fetch_tv_shows():
     endpoint = 'tv/popular'
     response = fetch_data_from_api(endpoint)
-    return response.get('results', [])
+    results = response.get('results', [])
+    for show in results:
+        if show.get('poster_path'):
+            show['poster_path'] = f"{IMAGE_BASE_URL}{show['poster_path']}"
+    return results
