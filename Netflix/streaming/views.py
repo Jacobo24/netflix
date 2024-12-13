@@ -56,9 +56,24 @@ def tvshow_list(request):
 
 
 def home(request):
-    movies = fetch_movies()
-    tv_shows = fetch_tv_shows()
-    return render(request, 'streaming/home.html', {'movies': movies, 'tv_shows': tv_shows})
+    # Películas
+    popular_movies = fetch_movies(endpoint='movie/popular')
+    top_rated_movies = fetch_movies(endpoint='movie/top_rated')
+    recent_movies = fetch_movies(endpoint='movie/now_playing')
+
+    # Series
+    popular_tv_shows = fetch_tv_shows(endpoint='tv/popular')
+    top_rated_tv_shows = fetch_tv_shows(endpoint='tv/top_rated')
+    airing_today_tv_shows = fetch_tv_shows(endpoint='tv/airing_today')
+
+    return render(request, 'streaming/home.html', {
+        'popular_movies': popular_movies,
+        'top_rated_movies': top_rated_movies,
+        'recent_movies': recent_movies,
+        'popular_tv_shows': popular_tv_shows,
+        'top_rated_tv_shows': top_rated_tv_shows,
+        'airing_today_tv_shows': airing_today_tv_shows,
+    })
 
 
 def category_list(request):
