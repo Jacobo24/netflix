@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Buscar Películas{% endblock %}
+
+{% block content %}
+<h1>Buscar Películas</h1>
+<form method="get">
+    <input type="text" name="q" value="{{ query }}" placeholder="Busca películas">
+    <button type="submit">Buscar</button>
+</form>
+
+<div class="grid-container">
+    {% for movie in results %}
+    <div class="card">
+        <img src="{{ movie.poster_path }}" alt="{{ movie.title }}">
+        <h3>{{ movie.title }}</h3>
+        <button onclick="window.location.href='{% url 'agregar_pelicula' movie.id %}'">Agregar a Lista Personal</button>
+    </div>
+    {% empty %}
+    <p>No se encontraron resultados.</p>
+    {% endfor %}
+</div>
+{% endblock %}

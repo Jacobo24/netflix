@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from django.http import JsonResponse
 from rest_framework.views import APIView

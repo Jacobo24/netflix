@@ -19,7 +19,17 @@
                 {% if user.is_authenticated %}
                     <li><a href="/auth/logout">Cerrar Sesión</a></li>
                 {% else %}
-                    <li><a href="/auth/login">Iniciar Sesión</a></li>
+                    <!-- Agrupación de botones de autenticación -->
+                    <li>
+                        {% if not hide_login_button %}
+                            <a href="{% url 'login' %}">Iniciar Sesión</a>
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if show_register_button %}
+                            <a href="{% url 'register' %}" class="register-button">Registrarse</a>
+                        {% endif %}
+                    </li>
                 {% endif %}
             </ul>
         </nav>
@@ -43,4 +53,5 @@
         <p>&copy; 2024 Mi Plataforma. Todos los derechos reservados.</p>
     </footer>
 </body>
+
 </html>
