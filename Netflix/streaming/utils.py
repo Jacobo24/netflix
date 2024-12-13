@@ -23,13 +23,14 @@ IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 def fetch_movies(endpoint='movie/popular'):
     """
     Obtiene películas desde la API de TMDB.
-    Parámetro endpoint permite elegir el tipo de películas a obtener.
     """
     response = fetch_data_from_api(endpoint)
     results = response.get('results', [])
-    # Formatear los resultados para garantizar que las claves existan
+    
+    # Formatear los resultados y asegurarse de incluir 'id'
     formatted_results = [
         {
+            "id": movie.get("id"),  # Asegurarte de incluir 'id'
             "title": movie.get("title"),
             "poster_path": f"{IMAGE_BASE_URL}{movie['poster_path']}" if movie.get("poster_path") else None,
             "overview": movie.get("overview"),
@@ -44,11 +45,20 @@ def fetch_movies(endpoint='movie/popular'):
 def fetch_tv_shows(endpoint='tv/popular'):
     """
     Obtiene series desde la API de TMDB.
-    Parámetro endpoint permite elegir el tipo de series a obtener.
     """
     response = fetch_data_from_api(endpoint)
     results = response.get('results', [])
-    for show in results:
-        if show.get('poster_path'):
-            show['poster_path'] = f"{IMAGE_BASE_URL}{show['poster_path']}"
-    return results
+    
+    # Formatear los resultados y asegurarse de incluir 'id'
+    formatted_results = [
+        {
+            "id": tv_show.get("id"),  # Asegurarte de incluir 'id'
+            "title": tv_show.get("name"),
+            "poster_path": f"{IMAGE_BASE_URL}{tv_show['poster_path']}" if tv_show.get("poster_path") else None,
+            "overview": tv_show.get("overview"),
+            "release_date": tv_show.get("first_air_date"),
+            "vote_average": tv_show.get("vote_average"),
+        }
+        for tv_show in results
+    ]
+    return formatted_results

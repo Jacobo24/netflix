@@ -13,6 +13,9 @@
             <p>{{ movie.overview|truncatewords:20 }}</p>
             <p><strong>Fecha:</strong> {{ movie.release_date }}</p>
             <p><strong>Calificación:</strong> {{ movie.vote_average }}</p>
+            <button class="toggle-list-button" data-id="{{ movie.id }}" data-type="movie">
+                Agregar a Mi Lista
+            </button>
         </div>
     </div>
     {% endfor %}

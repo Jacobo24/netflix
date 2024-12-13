@@ -6,6 +6,7 @@
     <title>{% block title %}Mi Plataforma{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}"> <!-- Token CSRF -->
 </head>
 <body>
     <header class="navbar">
@@ -16,6 +17,7 @@
                 <li><a href="/categories">Categorías</a></li>
                 <li><a href="/movies">Películas</a></li>
                 <li><a href="/tvshows">Series</a></li>
+                <li><a href="/my_list">Mi Lista</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="/auth/logout">Cerrar Sesión</a></li>
                 {% else %}
@@ -52,6 +54,8 @@
     <footer>
         <p>&copy; 2024 Mi Plataforma. Todos los derechos reservados.</p>
     </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 
 </html>

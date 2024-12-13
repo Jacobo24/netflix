@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Lista{% endblock %}
+
+{% block content %}
+<h1>Mi Lista</h1>
+<section>
+    <h2>Películas</h2>
+    <div class="grid-container">
+        {% for movie in movies %}
+        <div class="card">
+            <img src="{{ movie.poster_path }}" alt="Poster de {{ movie.title }}">
+            <div class="card-content">
+                <h3>{{ movie.title }}</h3>
+                <button class="toggle-list-button" data-id="{{ movie.movie_id }}" data-type="movie">
+                    Quitar de Mi Lista
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>Series</h2>
+    <div class="grid-container">
+        {% for tvshow in tv_shows %}
+        <div class="card">
+            <img src="{{ show.poster_path }}" alt="Poster de {{ tvshow.title }}">
+            <div class="card-content">
+                <h3>{{ tvshow.title }}</h3>
+                <button class="toggle-list-button" data-id="{{ tvshow.tvshow_id }}" data-type="tvshow">
+                    Quitar de Mi Lista
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -11,4 +11,6 @@ urlpatterns = [
     path('tvshows', views.tvshow_list, name='tvshow_list'),
     path('categories/', views.category_list, name='category_list'),
     path('categories/<str:category_type>/<int:genre_id>/', views.category_detail, name='category_detail'),
+    path('toggle_list_item/', views.toggle_list_item, name='toggle_list_item'),
+    path('my_list/', views.my_list, name='my_list'),
 ]

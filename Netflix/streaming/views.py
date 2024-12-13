@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from .serializers import *
 from .utils import fetch_movies, fetch_tv_shows
 import requests
+from django.contrib.auth.decorators import login_required
+from .models import PersonalList
+import json
 
 TMDB_API_KEY = '9980df73b55139ebcf9a053dbdaf4031'
 
@@ -114,3 +117,50 @@ def category_detail(request, category_type, genre_id):
         'category_name': request.GET.get("name", "Categoría"),
         'content': formatted_content
     })
+
+@login_required
+def toggle_list_item(request):
+    """
+    Agregar o quitar una película o serie de la lista personal.
+    """
+    if request.method == "POST":
+        try:
+            import json
+            data = json.loads(request.body)
+
+            item_id = data.get("item_id")
+            item_type = data.get("item_type")
+
+            if not item_id or not item_type:
+                return JsonResponse({"error": "Faltan datos: item_id o item_type"}, status=400)
+
+            if item_type == "movie":
+                item, created = PersonalList.objects.get_or_create(
+                    user=request.user, movie_id=item_id
+                )
+            elif item_type == "tvshow":
+                item, created = PersonalList.objects.get_or_create(
+                    user=request.user, tvshow_id=item_id
+                )
+            else:
+                return JsonResponse({"error": "Tipo inválido"}, status=400)
+
+            if not created:
+                item.delete()
+                return JsonResponse({"status": "removed"})
+            return JsonResponse({"status": "added"})
+
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": "El cuerpo de la solicitud no es un JSON válido"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"Error interno: {str(e)}"}, status=500)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+@login_required
+def my_list(request):
+    movies = PersonalList.objects.filter(user=request.user, movie_id__isnull=False)
+    tvshows = PersonalList.objects.filter(user=request.user, tvshow_id__isnull=False)
+
+    return render(request, 'streaming/my_list.html', {'movies': movies, 'tv_shows': tvshows})
